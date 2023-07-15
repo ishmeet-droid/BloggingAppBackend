@@ -50,16 +50,26 @@ public class GlobalException {
     }
 
     // Multiple Exceptions.................
-    @ExceptionHandler({ DataIntegrityViolationException.class })
+    @ExceptionHandler({ DataIntegrityViolationException.class ,Exception.class})
     public ResponseEntity<List<ApiResponse>> handleMultipleExceptions(
             Exception ex) {
 
-        List<ApiResponse> response = null;
-        response = new ArrayList<ApiResponse>();
+        List<ApiResponse> response = new ArrayList<ApiResponse>();
+        
 
-        response.add(new ApiResponse(
+       if (ex instanceof DataIntegrityViolationException) {
+           // DataIntegrityViolationException ex1 = (DataIntegrityViolationException) ex;
+            response.add(new ApiResponse(
                 "mapping can't be done check your input",
-                false));
+                 false));
+       }
+
+        else {
+            response.add(new ApiResponse(
+                "something went wrong",
+                 false));
+        }
+         
 
         return new ResponseEntity<List<ApiResponse>>(
                 response,
@@ -96,37 +106,5 @@ public class GlobalException {
     // HttpStatus.BAD_REQUEST);
     // }
 
-    // Multiple Exceptions.................
-    // @ExceptionHandler({MethodArgumentNotValidException.class,
-    // DataIntegrityViolationException.class})
-    // public ResponseEntity<List<ApiResponse>> handleMultipleExceptions(
-    // Exception ex) {
-
-    // List<ApiResponse> response = null;
-
-    // if(Objects.equals(ex.getClass(), MethodArgumentNotValidException.class))
-    // {
-
-    // MethodArgumentNotValidException ex1 = (MethodArgumentNotValidException) ex;
-
-    // List<ObjectError> errors = ex1.getBindingResult().getAllErrors();
-
-    // response = new ArrayList<ApiResponse>();
-
-    // for (ObjectError error : errors) {
-    // String errorMessage = error.getDefaultMessage();
-    // response.add(new ApiResponse(errorMessage, false));
-    // }
-    // }
-    // else if(Objects.equals(ex.getClass(), DataIntegrityViolationException.class))
-    // {
-    // response = new ArrayList<ApiResponse>();
-    // response.add(new ApiResponse("Email mapping can't be done",
-    // false));
-    // }
-
-    // return new ResponseEntity<List<ApiResponse>>(
-    // response,
-    // HttpStatus.BAD_REQUEST);
-    // }
+   
 }

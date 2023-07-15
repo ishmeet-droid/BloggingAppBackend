@@ -1,10 +1,10 @@
-package com.nagarro.bloggingapp.Users;
+package com.nagarro.bloggingapp.user;
 
 import java.util.List;
 
-import com.nagarro.bloggingapp.Users.dtos.CreateUser;
-import com.nagarro.bloggingapp.Users.dtos.UserResponse;
-import com.nagarro.bloggingapp.Users.dtos.UpdateAbtAndPass;
+import com.nagarro.bloggingapp.user.dtos.CreateUser;
+import com.nagarro.bloggingapp.user.dtos.UpdateAbtAndPass;
+import com.nagarro.bloggingapp.user.dtos.UserResponse;
 
 
 

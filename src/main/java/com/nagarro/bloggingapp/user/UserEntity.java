@@ -1,7 +1,8 @@
-package com.nagarro.bloggingapp.Users;
+package com.nagarro.bloggingapp.user;
 
 import java.util.List;
 
+import com.nagarro.bloggingapp.comments.CommentEntity;
 import com.nagarro.bloggingapp.posts.PostEntity;
 
 import jakarta.persistence.CascadeType;
@@ -44,4 +45,7 @@ public class UserEntity {
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PostEntity> posts;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CommentEntity> comments;
 }

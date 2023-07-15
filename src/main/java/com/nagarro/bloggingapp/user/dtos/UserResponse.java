@@ -1,4 +1,4 @@
-package com.nagarro.bloggingapp.Users.dtos;
+package com.nagarro.bloggingapp.user.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.nagarro.bloggingapp.Users;
+package com.nagarro.bloggingapp.user;
 
 import java.util.List;
 
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nagarro.bloggingapp.Users.dtos.CreateUser;
-import com.nagarro.bloggingapp.Users.dtos.UserResponse;
-import com.nagarro.bloggingapp.Users.dtos.UpdateAbtAndPass;
 import com.nagarro.bloggingapp.common.ApiResponse;
+import com.nagarro.bloggingapp.user.dtos.CreateUser;
+import com.nagarro.bloggingapp.user.dtos.UpdateAbtAndPass;
+import com.nagarro.bloggingapp.user.dtos.UserResponse;
 
 import jakarta.validation.Valid;
 

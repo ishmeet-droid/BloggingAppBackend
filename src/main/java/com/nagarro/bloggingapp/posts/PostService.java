@@ -1,5 +1,9 @@
 package com.nagarro.bloggingapp.posts;
 
+import java.io.InputStream;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.nagarro.bloggingapp.posts.dtos.CreatePost;
 import com.nagarro.bloggingapp.posts.dtos.PostResponse;
 import com.nagarro.bloggingapp.posts.dtos.PostWithPage;
@@ -28,6 +32,7 @@ public interface PostService {
 
     PostWithPage searchPost(String search, int page, int size, String sort, String direction);
 
-
-
+    String uploadImage(String path, MultipartFile file) throws Exception;
+    
+    InputStream getImage(String path, String fileName) throws Exception;
 }

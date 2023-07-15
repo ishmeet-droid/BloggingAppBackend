@@ -1,7 +1,13 @@
 package com.nagarro.bloggingapp.posts;
 
+import java.io.InputStream;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nagarro.bloggingapp.common.ApiResponse;
 import com.nagarro.bloggingapp.posts.dtos.CreatePost;
 import com.nagarro.bloggingapp.posts.dtos.PostResponse;
 import com.nagarro.bloggingapp.posts.dtos.PostWithPage;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -23,6 +32,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class PostController {
 
     private PostServiceImpl postService;
+
+    @Value("${project.image}")
+    private String path;
 
     PostController(PostServiceImpl postService) {
         this.postService = postService;
@@ -147,23 +159,60 @@ public class PostController {
      */
     @GetMapping("Posts/SearchInTitle")
     public ResponseEntity<PostWithPage> searchPost(
-        @RequestParam(value = "searchFor", defaultValue = "", required = false) String searchFor,
-        @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-        @RequestParam(value = "size", defaultValue = "10", required = false) int size,
-        @RequestParam(value = "sort", defaultValue = "id", required = false) String sort,
-        @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-            
-           
+            @RequestParam(value = "searchFor", defaultValue = "", required = false) String searchFor,
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+            @RequestParam(value = "sort", defaultValue = "id", required = false) String sort,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
-            PostWithPage postResponse = postService
+        PostWithPage postResponse = postService
                 .searchPost(searchFor, page, size, sort, direction);
-            
-            // Check Response is empty or not
-             if (postResponse.toString().isEmpty()) {
-                return new ResponseEntity<PostWithPage>(HttpStatus.NO_CONTENT);
-            }
+
+        // Check Response is empty or not
+        if (postResponse.toString().isEmpty()) {
+            return new ResponseEntity<PostWithPage>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<PostWithPage>(postResponse, HttpStatus.OK);
 
-          }
+    }
 
+    // Image Upload
+    @PostMapping("/Posts/{id}/Image")
+    public ResponseEntity<PostResponse> uploadImage(
+            @RequestParam("image") MultipartFile image,
+            @PathVariable Long id) throws Exception {
+        String imageName = null;
+
+        PostResponse postResponse = postService.getPostById(id);
+
+        imageName = postService.uploadImage(path, image);
+
+        CreatePost createPost = new CreatePost();
+
+        createPost.setTitle(postResponse.getTitle());
+        createPost.setContent(postResponse.getContent());
+        createPost.setImageURI(imageName);
+
+        postResponse = postService.updatePost(createPost, id);
+
+        return new ResponseEntity<PostResponse>(postResponse, HttpStatus.OK);
+    }
+
+    // Code to display Image
+    @GetMapping("/Posts/{id}/Image")
+    public ResponseEntity<HttpServletResponse > getImage(@PathVariable Long id,
+        HttpServletResponse response) throws Exception {
+
+        PostResponse postResponse = postService.getPostById(id);
+        String imageName = postResponse.getImageURI();
+        
+        InputStream resource = postService.getImage(path, imageName);
+
+        StreamUtils.copy(resource, response.getOutputStream());
+        
+       
+        return new ResponseEntity<HttpServletResponse>(response, HttpStatus.OK);
+    }
+
+    
 }

@@ -1,7 +1,7 @@
 package com.nagarro.bloggingapp.posts.dtos;
 
-import com.nagarro.bloggingapp.Users.dtos.UserResponse;
 import com.nagarro.bloggingapp.categories.dtos.CategoryResponse;
+import com.nagarro.bloggingapp.user.dtos.UserResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

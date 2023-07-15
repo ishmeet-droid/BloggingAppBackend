@@ -1,7 +1,14 @@
 package com.nagarro.bloggingapp.posts;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -11,13 +18,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.nagarro.bloggingapp.Users.UserRepository;
 import com.nagarro.bloggingapp.categories.CategoryRepository;
 import com.nagarro.bloggingapp.common.ResourceNotFound;
 import com.nagarro.bloggingapp.posts.dtos.CreatePost;
 import com.nagarro.bloggingapp.posts.dtos.PostResponse;
 import com.nagarro.bloggingapp.posts.dtos.PostWithPage;
+import com.nagarro.bloggingapp.user.UserRepository;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -175,6 +183,7 @@ public class PostServiceImpl implements PostService {
 
                 postEntity.setTitle(updatePost.getTitle());
                 postEntity.setContent(updatePost.getContent());
+                postEntity.setImageURI(updatePost.getImageURI());
 
                 PostEntity savedPost = postRepository.save(postEntity);
 
@@ -209,6 +218,46 @@ public class PostServiceImpl implements PostService {
                 
                 return postWithPageInfo;
         }
+        @Override
+        public InputStream getImage(String path, String fileName) throws Exception {
+                
+                String filePath = path + File.separator + fileName;
+                
+                InputStream inputStream = new FileInputStream(filePath);
+                
+                return inputStream;
+        }
+
+        @Override
+        public String uploadImage(String path, MultipartFile file) throws Exception {
+               
+                //File name
+                String name = file.getOriginalFilename();
+
+                //randomName generation for file
+                String randomName = UUID.randomUUID().toString();
+                String extension = name.substring(name.lastIndexOf("."));
+                
+                //Can Validate Extension
+
+                randomName = randomName + extension;
+                
+                //File Path
+                String filePath = path +File.separator + randomName;
+
+                //Create Folder if not created...
+                File folder = new File(path);
+                if (!folder.exists()) {
+                        folder.mkdir();
+                }
+
+                //file Copy
+                Files.copy(file.getInputStream(), Paths.get(filePath),
+                                StandardCopyOption.REPLACE_EXISTING);
+
+
+                return randomName;
+        }
 
         private PostWithPage getPostWithPageInfo(
                         List<PostResponse> postResponse,
@@ -234,5 +283,7 @@ public class PostServiceImpl implements PostService {
                 }
                 return sortby;
         }
+
+        
 
 }
