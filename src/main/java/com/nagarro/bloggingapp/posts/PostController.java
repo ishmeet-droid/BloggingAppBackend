@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nagarro.bloggingapp.common.ApiResponse;
-import com.nagarro.bloggingapp.posts.dtos.CreatePost;
-import com.nagarro.bloggingapp.posts.dtos.PostResponse;
-import com.nagarro.bloggingapp.posts.dtos.PostWithPage;
+import com.nagarro.bloggingapp.posts.dtos.PostRequestDto;
+import com.nagarro.bloggingapp.posts.dtos.PostResponseDto;
+import com.nagarro.bloggingapp.posts.dtos.PostWithPageDto;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -41,76 +41,76 @@ public class PostController {
     }
 
     @PostMapping("/Users/{userId}/Category/{categoryId}/Posts")
-    public ResponseEntity<PostResponse> createPost(
-            @RequestBody CreatePost createPost,
+    public ResponseEntity<PostResponseDto> createPost(
+            @RequestBody PostRequestDto createPost,
             @PathVariable Long userId,
             @PathVariable Long categoryId) {
-        PostResponse postResponse = postService.createPost(createPost, userId, categoryId);
+        PostResponseDto postResponse = postService.createPost(createPost, userId, categoryId);
 
-        return new ResponseEntity<PostResponse>(postResponse, HttpStatus.CREATED);
+        return new ResponseEntity<PostResponseDto>(postResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("/Posts/{id}")
-    public ResponseEntity<PostResponse> getPostById(@PathVariable Long id) {
-        PostResponse postResponse = postService.getPostById(id);
+    public ResponseEntity<PostResponseDto> getPostById(@PathVariable Long id) {
+        PostResponseDto postResponse = postService.getPostById(id);
 
-        return new ResponseEntity<PostResponse>(postResponse, HttpStatus.OK);
+        return new ResponseEntity<PostResponseDto>(postResponse, HttpStatus.OK);
     }
 
     @GetMapping("/Posts")
-    public ResponseEntity<PostWithPage> getAllPosts(
+    public ResponseEntity<PostWithPageDto> getAllPosts(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "id") String sort,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
-        PostWithPage postResponse = postService
+        PostWithPageDto postResponse = postService
                 .getAllPosts(page, size, sort, direction);
 
         // Check List is empty or not
         if (postResponse.toString().isEmpty()) {
-            return new ResponseEntity<PostWithPage>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<PostWithPageDto>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<PostWithPage>(postResponse, HttpStatus.OK);
+        return new ResponseEntity<PostWithPageDto>(postResponse, HttpStatus.OK);
     }
 
     @GetMapping("/Users/{userId}/Posts")
-    public ResponseEntity<PostWithPage> getPostsByUser(@PathVariable Long userId,
+    public ResponseEntity<PostWithPageDto> getPostsByUser(@PathVariable Long userId,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "id") String sort,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
-        PostWithPage postResponse = postService
+        PostWithPageDto postResponse = postService
                 .getPostByUser(userId, page, size, sort, direction);
 
         // Check List is empty or not
         if (postResponse.toString().isEmpty()) {
-            return new ResponseEntity<PostWithPage>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<PostWithPageDto>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<PostWithPage>(postResponse, HttpStatus.OK);
+        return new ResponseEntity<PostWithPageDto>(postResponse, HttpStatus.OK);
     }
 
     @GetMapping("/Category/{categoryId}/Posts")
-    public ResponseEntity<PostWithPage> getPostByCategory(
+    public ResponseEntity<PostWithPageDto> getPostByCategory(
             @PathVariable Long categoryId,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "id") String sort,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
-        PostWithPage postResponse = postService
+        PostWithPageDto postResponse = postService
                 .getPostByCategory(categoryId, page, size, sort, direction);
 
         // Check Response is empty or not
         if (postResponse.toString().isEmpty()) {
-            return new ResponseEntity<PostWithPage>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<PostWithPageDto>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<PostWithPage>(postResponse, HttpStatus.OK);
+        return new ResponseEntity<PostWithPageDto>(postResponse, HttpStatus.OK);
     }
 
     @GetMapping("/Users/{userId}/Category/{categoryId}/Posts")
-    public ResponseEntity<PostWithPage> getPostByUserAndCategory(
+    public ResponseEntity<PostWithPageDto> getPostByUserAndCategory(
             @PathVariable Long userId,
             @PathVariable Long categoryId,
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -118,27 +118,27 @@ public class PostController {
             @RequestParam(value = "sort", defaultValue = "id") String sort,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
-        PostWithPage postResponse = postService
+        PostWithPageDto postResponse = postService
                 .getPostByUserAndCategory(userId, categoryId, page, size, sort, direction);
 
         // Check Response is empty or not
         if (postResponse.toString().isEmpty()) {
-            return new ResponseEntity<PostWithPage>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<PostWithPageDto>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<PostWithPage>(postResponse, HttpStatus.OK);
+        return new ResponseEntity<PostWithPageDto>(postResponse, HttpStatus.OK);
     }
 
     @PutMapping("/Users/{userId}/Category/{categoryId}/Posts/{id}")
-    public ResponseEntity<PostResponse> updatePost(
-            @RequestBody CreatePost updatePost,
+    public ResponseEntity<PostResponseDto> updatePost(
+            @RequestBody PostRequestDto updatePost,
             @PathVariable Long userId,
             @PathVariable Long categoryId,
             @PathVariable Long id) {
 
-        PostResponse postResponse = postService.updatePost(updatePost, id);
+        PostResponseDto postResponse = postService.updatePost(updatePost, id);
 
-        return new ResponseEntity<PostResponse>(postResponse, HttpStatus.OK);
+        return new ResponseEntity<PostResponseDto>(postResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/Users/{userId}/Category/{categoryId}/Posts/{id}")
@@ -158,36 +158,36 @@ public class PostController {
      * @GetMapping("/Users/{userId}/Posts/Searchfor")
      */
     @GetMapping("Posts/SearchInTitle")
-    public ResponseEntity<PostWithPage> searchPost(
+    public ResponseEntity<PostWithPageDto> searchPost(
             @RequestParam(value = "searchFor", defaultValue = "", required = false) String searchFor,
             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size,
             @RequestParam(value = "sort", defaultValue = "id", required = false) String sort,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
-        PostWithPage postResponse = postService
+        PostWithPageDto postResponse = postService
                 .searchPost(searchFor, page, size, sort, direction);
 
         // Check Response is empty or not
         if (postResponse.toString().isEmpty()) {
-            return new ResponseEntity<PostWithPage>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<PostWithPageDto>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<PostWithPage>(postResponse, HttpStatus.OK);
+        return new ResponseEntity<PostWithPageDto>(postResponse, HttpStatus.OK);
 
     }
 
     // Image Upload
     @PostMapping("/Posts/{id}/Image")
-    public ResponseEntity<PostResponse> uploadImage(
+    public ResponseEntity<PostResponseDto> uploadImage(
             @RequestParam("image") MultipartFile image,
             @PathVariable Long id) throws Exception {
         String imageName = null;
 
-        PostResponse postResponse = postService.getPostById(id);
+        PostResponseDto postResponse = postService.getPostById(id);
 
         imageName = postService.uploadImage(path, image);
 
-        CreatePost createPost = new CreatePost();
+        PostRequestDto createPost = new PostRequestDto();
 
         createPost.setTitle(postResponse.getTitle());
         createPost.setContent(postResponse.getContent());
@@ -195,7 +195,7 @@ public class PostController {
 
         postResponse = postService.updatePost(createPost, id);
 
-        return new ResponseEntity<PostResponse>(postResponse, HttpStatus.OK);
+        return new ResponseEntity<PostResponseDto>(postResponse, HttpStatus.OK);
     }
 
     // Code to display Image
@@ -203,7 +203,7 @@ public class PostController {
     public ResponseEntity<HttpServletResponse > getImage(@PathVariable Long id,
         HttpServletResponse response) throws Exception {
 
-        PostResponse postResponse = postService.getPostById(id);
+        PostResponseDto postResponse = postService.getPostById(id);
         String imageName = postResponse.getImageURI();
         
         InputStream resource = postService.getImage(path, imageName);

@@ -3,24 +3,24 @@ package com.nagarro.bloggingapp.categories;
 import java.util.HashMap;
 import java.util.List;
 
-import com.nagarro.bloggingapp.categories.dtos.CreateCategory;
-import com.nagarro.bloggingapp.categories.dtos.CategoryResponse;
+import com.nagarro.bloggingapp.categories.dtos.CategoryRequestDto;
+import com.nagarro.bloggingapp.categories.dtos.CategoryResponseDto;
 
 public interface CategoryService {
 
-    CategoryResponse createCategory(CreateCategory createCategory);
+    CategoryResponseDto createCategory(CategoryRequestDto createCategory);
 
-    List<CategoryResponse> getAllCategories();
+    List<CategoryResponseDto> getAllCategories();
 
-    CategoryResponse getCategory(Long id);
+    CategoryResponseDto getCategory(Long id);
 
-    CategoryResponse updateCategory(CreateCategory updateCategory, Long id);
+    CategoryResponseDto updateCategory(CategoryRequestDto updateCategory, Long id);
 
-    CategoryResponse getCategoryByName(String name);
+    CategoryResponseDto getCategoryByName(String name);
 
-    CategoryResponse updateCategoryName(HashMap<String,String> map, Long id);
+    CategoryResponseDto updateCategoryName(HashMap<String,String> map, Long id);
 
-    CategoryResponse updateCategoryDescription(HashMap<String,String> map, Long id);
+    CategoryResponseDto updateCategoryDescription(HashMap<String,String> map, Long id);
 
     void deleteCategory(Long id);
     

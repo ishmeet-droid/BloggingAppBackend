@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CreateCategory {
+public class CategoryRequestDto {
 
     @NotEmpty(message = "Category name cannot be empty")
     private String categoryName;

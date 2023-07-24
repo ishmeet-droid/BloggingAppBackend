@@ -1,4 +1,5 @@
-package com.nagarro.bloggingapp.posts.dtos;
+package com.nagarro.bloggingapp.comments.dtos;
+
 
 import java.util.List;
 
@@ -7,14 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@Setter
+@NoArgsConstructor
 @Getter
-public class PostWithPage {
+@Setter
+public class CommentResponseWithPageInfoDto {
 
-    List<PostResponse> postResponse;
-
+    List<CommentResponseDto> commentResponse;
+    
     int pageNumber;
 
     int totalPages;
@@ -27,8 +28,4 @@ public class PostWithPage {
 
     boolean isLast;
 
-    
-
-
-    
 }

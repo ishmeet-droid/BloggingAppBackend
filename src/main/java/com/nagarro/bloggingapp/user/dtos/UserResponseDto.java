@@ -1,5 +1,10 @@
 package com.nagarro.bloggingapp.user.dtos;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.nagarro.bloggingapp.role.RoleEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserResponse {
+public class UserResponseDto {
     
     private Long id;
 
@@ -18,4 +23,7 @@ public class UserResponse {
     private String email;
     
     private String about;
+
+    private Set<RoleEntity> roles = new HashSet<>();
+
 }

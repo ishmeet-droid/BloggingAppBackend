@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CreateUser {
+public class UserRequestDto {
     /*
      * 
      * Not Empty checks for null and empty string

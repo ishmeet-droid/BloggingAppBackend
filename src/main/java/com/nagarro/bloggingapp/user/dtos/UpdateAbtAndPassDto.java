@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UpdateAbtAndPass {
+public class UpdateAbtAndPassDto {
 
     @NotEmpty(message = "Password cannot be null")
     @Size(min = 8, max = 20, message = "Password should be between 8 to 20 characters")

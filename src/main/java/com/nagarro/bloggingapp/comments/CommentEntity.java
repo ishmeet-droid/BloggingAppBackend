@@ -1,5 +1,7 @@
 package com.nagarro.bloggingapp.comments;
 
+import java.util.Date;
+
 import com.nagarro.bloggingapp.posts.PostEntity;
 import com.nagarro.bloggingapp.user.UserEntity;
 
@@ -25,9 +27,11 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String comment;
     
+    @Column(nullable = false)
+    private Date createdAt;
 
     @ManyToOne
     private UserEntity user;

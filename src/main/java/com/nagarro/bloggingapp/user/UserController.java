@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nagarro.bloggingapp.common.ApiResponse;
-import com.nagarro.bloggingapp.user.dtos.CreateUser;
-import com.nagarro.bloggingapp.user.dtos.UpdateAbtAndPass;
-import com.nagarro.bloggingapp.user.dtos.UserResponse;
+import com.nagarro.bloggingapp.user.dtos.UserRequestDto;
+import com.nagarro.bloggingapp.user.dtos.UpdateAbtAndPassDto;
+import com.nagarro.bloggingapp.user.dtos.UserResponseDto;
 
 import jakarta.validation.Valid;
 
@@ -32,43 +32,43 @@ public class UserController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        return new ResponseEntity<List<UserResponse>>(
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        return new ResponseEntity<List<UserResponseDto>>(
                 userServicesImpl.getUsers(),
                 HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
-        return new ResponseEntity<UserResponse>(
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
+        return new ResponseEntity<UserResponseDto>(
                 userServicesImpl.getUserById(id),
                 HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> createUser(
-            @Valid @RequestBody CreateUser createUser) {
+    public ResponseEntity<UserResponseDto> createUser(
+            @Valid @RequestBody UserRequestDto createUser) {
 
-        UserResponse responseUser = userServicesImpl.createUser(createUser);
+        UserResponseDto responseUser = userServicesImpl.createUser(createUser);
 
-        return new ResponseEntity<UserResponse>(
+        return new ResponseEntity<UserResponseDto>(
                 responseUser,
                 HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(
-            @Valid @RequestBody CreateUser updateUser, @PathVariable Long id) {
-        return new ResponseEntity<UserResponse>(
+    public ResponseEntity<UserResponseDto> updateUser(
+            @Valid @RequestBody UserRequestDto updateUser, @PathVariable Long id) {
+        return new ResponseEntity<UserResponseDto>(
                 userServicesImpl.updateUser(updateUser, id),
                 HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUserPassAndAbout(
-            @Valid @RequestBody UpdateAbtAndPass updateUserPassAndAbout,
+    public ResponseEntity<UserResponseDto> updateUserPassAndAbout(
+            @Valid @RequestBody UpdateAbtAndPassDto updateUserPassAndAbout,
             @PathVariable Long id) {
-        return new ResponseEntity<UserResponse>(
+        return new ResponseEntity<UserResponseDto>(
                 userServicesImpl.updateUserPassAndAbout(updateUserPassAndAbout, id),
                 HttpStatus.OK);
     }

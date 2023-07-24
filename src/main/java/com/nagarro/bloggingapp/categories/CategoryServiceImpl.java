@@ -7,8 +7,8 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.nagarro.bloggingapp.categories.dtos.CreateCategory;
-import com.nagarro.bloggingapp.categories.dtos.CategoryResponse;
+import com.nagarro.bloggingapp.categories.dtos.CategoryRequestDto;
+import com.nagarro.bloggingapp.categories.dtos.CategoryResponseDto;
 import com.nagarro.bloggingapp.common.ResourceNotFound;
 
 @Service
@@ -24,13 +24,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponse createCategory(CreateCategory createCategory) {
+    public CategoryResponseDto createCategory(CategoryRequestDto createCategory) {
 
         CategoryEntity categoryEntity = categoryMapper.map(
                 createCategory, CategoryEntity.class);
         CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
-        CategoryResponse responseCategory = categoryMapper.map(savedCategory,
-                CategoryResponse.class);
+        CategoryResponseDto responseCategory = categoryMapper.map(savedCategory,
+                CategoryResponseDto.class);
         return responseCategory;
     }
 
@@ -44,28 +44,28 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryResponse> getAllCategories() {
+    public List<CategoryResponseDto> getAllCategories() {
         List<CategoryEntity> categoryEntity = categoryRepository.findAll();
 
-        List<CategoryResponse> responseCategory = new ArrayList<>();
+        List<CategoryResponseDto> responseCategory = new ArrayList<>();
 
         for (CategoryEntity category : categoryEntity) {
-            responseCategory.add(categoryMapper.map(category, CategoryResponse.class));
+            responseCategory.add(categoryMapper.map(category, CategoryResponseDto.class));
         }
         return responseCategory;
     }
 
     @Override
-    public CategoryResponse getCategory(Long id) {
+    public CategoryResponseDto getCategory(Long id) {
         CategoryEntity categoryEntity = categoryRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFound("Get-Category-By-Id", "CategoryId", id));
-        CategoryResponse responseCategory = categoryMapper.map(categoryEntity,
-                CategoryResponse.class);
+        CategoryResponseDto responseCategory = categoryMapper.map(categoryEntity,
+                CategoryResponseDto.class);
         return responseCategory;
     }
 
     @Override
-    public CategoryResponse updateCategory(CreateCategory updateCategory, Long id) {
+    public CategoryResponseDto updateCategory(CategoryRequestDto updateCategory, Long id) {
         CategoryEntity categoryEntity = categoryRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFound("Update-Category",
                         "CategoryId", id));
@@ -73,41 +73,41 @@ public class CategoryServiceImpl implements CategoryService {
         // categoryEntity.setCategoryName(updateCategory.getCategoryName());
         // categoryEntity.setCategoryDescription(updateCategory.getCategoryDescription());
         CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
-        CategoryResponse responseCategory = categoryMapper.map(savedCategory,
-                CategoryResponse.class);
+        CategoryResponseDto responseCategory = categoryMapper.map(savedCategory,
+                CategoryResponseDto.class);
         return responseCategory;
     }
 
     @Override
-    public CategoryResponse getCategoryByName(String name) {
+    public CategoryResponseDto getCategoryByName(String name) {
         //One Category Id should be associated with one category name
         CategoryEntity categoryEntity = categoryRepository.findByCategoryName(name);
-        CategoryResponse responseCategory = categoryMapper.map(categoryEntity,
-                CategoryResponse.class);
+        CategoryResponseDto responseCategory = categoryMapper.map(categoryEntity,
+                CategoryResponseDto.class);
         return responseCategory;
     }
 
     @Override
-    public CategoryResponse updateCategoryDescription(HashMap<String,String> map, Long id) {
+    public CategoryResponseDto updateCategoryDescription(HashMap<String,String> map, Long id) {
         CategoryEntity categoryEntity = categoryRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFound("Update-Category-Description",
                         "CategoryId", id));
         categoryEntity.setCategoryDescription(map.get("categoryDescription"));
         CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
-        CategoryResponse responseCategory = categoryMapper.map(savedCategory,
-                CategoryResponse.class);
+        CategoryResponseDto responseCategory = categoryMapper.map(savedCategory,
+                CategoryResponseDto.class);
         return responseCategory;
     }
 
     @Override
-    public CategoryResponse updateCategoryName(HashMap<String,String> map, Long id) {
+    public CategoryResponseDto updateCategoryName(HashMap<String,String> map, Long id) {
         CategoryEntity categoryEntity = categoryRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFound("Update-Category-Name",
                         "CategoryId", id));
         categoryEntity.setCategoryName(map.get("categoryName"));
         CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
-        CategoryResponse responseCategory = categoryMapper.map(savedCategory,
-                CategoryResponse.class);
+        CategoryResponseDto responseCategory = categoryMapper.map(savedCategory,
+                CategoryResponseDto.class);
         return responseCategory;
     }
 

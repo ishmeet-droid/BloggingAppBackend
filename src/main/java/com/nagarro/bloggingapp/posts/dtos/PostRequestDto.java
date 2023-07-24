@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CreatePost {
+public class PostRequestDto {
     
     @NotEmpty
     @Size(min = 10, max = 100)

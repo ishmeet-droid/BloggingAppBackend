@@ -1,14 +1,20 @@
 package com.nagarro.bloggingapp.comments;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
-public class CommentService {
+import com.nagarro.bloggingapp.comments.dtos.CommentRequestDto;
+import com.nagarro.bloggingapp.comments.dtos.CommentResponseDto;
+import com.nagarro.bloggingapp.comments.dtos.CommentResponseWithPageInfoDto;
 
-    CommentRepository commentRepository;
+public interface CommentService {
 
-    public CommentService(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
-    }
+   CommentResponseDto addComment(CommentRequestDto commentRequest, 
+           Long userId, Long postId);
+
+    CommentResponseWithPageInfoDto getComments(int page, int size, Long postId);
+
+    void deleteComment(Long commentId, Long postId);
+  
+ 
     
 }

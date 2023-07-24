@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nagarro.bloggingapp.categories.dtos.CreateCategory;
-import com.nagarro.bloggingapp.categories.dtos.CategoryResponse;
+import com.nagarro.bloggingapp.categories.dtos.CategoryRequestDto;
+import com.nagarro.bloggingapp.categories.dtos.CategoryResponseDto;
 import com.nagarro.bloggingapp.common.ApiResponse;
 
 @RestController
@@ -30,22 +30,22 @@ public class CategoryController {
     }
 
     @PostMapping("")
-    public ResponseEntity<CategoryResponse> createCategory(
-            @RequestBody CreateCategory createCategory) {
-        CategoryResponse responseCategory = categoryService
+    public ResponseEntity<CategoryResponseDto> createCategory(
+            @RequestBody CategoryRequestDto createCategory) {
+        CategoryResponseDto responseCategory = categoryService
                 .createCategory(createCategory);
         return new ResponseEntity<>(responseCategory, HttpStatus.CREATED);
     }
      @GetMapping("")
-    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-        List<CategoryResponse> responseCategories = categoryService
+    public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
+        List<CategoryResponseDto> responseCategories = categoryService
                 .getAllCategories();
         return new ResponseEntity<>(responseCategories, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryResponse> getCategory(@PathVariable Long id) {
-        CategoryResponse responseCategory = categoryService.getCategory(id);
+    public ResponseEntity<CategoryResponseDto> getCategory(@PathVariable Long id) {
+        CategoryResponseDto responseCategory = categoryService.getCategory(id);
         return new ResponseEntity<>(responseCategory, HttpStatus.OK);
     }
 
@@ -59,28 +59,28 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponse> updateCategory(
+    public ResponseEntity<CategoryResponseDto> updateCategory(
             @PathVariable Long id,
-            @RequestBody CreateCategory updateCategory) {
-        CategoryResponse responseCategory = categoryService
+            @RequestBody CategoryRequestDto updateCategory) {
+        CategoryResponseDto responseCategory = categoryService
                 .updateCategory(updateCategory, id);
         return new ResponseEntity<>(responseCategory, HttpStatus.OK);
     }
 
     @PatchMapping("/update-name/{id}")
-    public ResponseEntity<CategoryResponse> updateCategoryByName(
+    public ResponseEntity<CategoryResponseDto> updateCategoryByName(
             @PathVariable Long id,
             @RequestBody HashMap<String,String> updateCategoryName) {
-        CategoryResponse responseCategory = categoryService
+        CategoryResponseDto responseCategory = categoryService
                 .updateCategoryName(updateCategoryName, id);
         return new ResponseEntity<>(responseCategory, HttpStatus.OK);
     }
 
     @PatchMapping("/update-description/{id}")
-    public ResponseEntity<CategoryResponse> updateCategoryByDescription(
+    public ResponseEntity<CategoryResponseDto> updateCategoryByDescription(
             @PathVariable Long id,
             @RequestBody HashMap<String,String>  updateCategoryDescription) {
-        CategoryResponse responseCategory = categoryService
+        CategoryResponseDto responseCategory = categoryService
                 .updateCategoryDescription(updateCategoryDescription, id);
         return new ResponseEntity<>(responseCategory, HttpStatus.OK);
     }
